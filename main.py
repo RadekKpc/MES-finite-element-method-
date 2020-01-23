@@ -9,12 +9,13 @@ data = InputData()
 N = data.N
 
 #Could be helpful:
-#Exponential function: np.exp(x)
+#Exponential function: np.exp(
+# x)
 #Logarithm function: np.log(x)
-functionA = lambda x: 1
-functionB = lambda x: 0
-functionC = lambda x: 0
-functionF = lambda x: 0
+functionA = lambda x: 2
+functionB = lambda x: -3
+functionC = lambda x: 1
+functionF = lambda x: x*x
 
 H = []
 rightSite = []
@@ -39,10 +40,10 @@ for i in range(0,N-1,1):
     row = []
     for j in range(0,N,1):
         row.append(
-            (-1)*si.quad(functionMultiply(functionMultiply(functionDerived(H[i]),functionDerived(H[j])),functionA),data.startPoint,data.endPoint)[0]
-            +si.quad(functionMultiply(functionMultiply(functionDerived(H[i]),H[j]),functionB),data.startPoint,data.endPoint)[0]+
-            si.quad(functionMultiply(functionMultiply(H[i],H[j]),functionC),data.startPoint,data.endPoint)[0]
-            - data.beta*H[i](0)*H[j](0)
+            (-1)*si.quad(functionMultiply(functionMultiply(functionDerived(H[j]),functionDerived(H[i])),functionA),data.startPoint,data.endPoint)[0]
+            +si.quad(functionMultiply(functionMultiply(functionDerived(H[j]),H[i]),functionB),data.startPoint,data.endPoint)[0]+
+            si.quad(functionMultiply(functionMultiply(H[j],H[i]),functionC),data.startPoint,data.endPoint)[0]
+            - data.beta*H[j](0)*H[i](0)
         )
     leftSite.append(row)
 
@@ -56,7 +57,6 @@ L = np.array(leftSite)
 R = np.array(rightSite)
 
 u = np.linalg.solve(L,R)
-
 print("B(u*,v) matrix:")
 print(L)
 
@@ -73,13 +73,15 @@ for i in range(0,N,1):
 #Showing result
 X = []
 Y = []
-for j in np.arange(data.startPoint,data.endPoint + 0.001,0.001):
+for j in np.arange(data.startPoint + + 0.01,data.endPoint + 0.01,0.01):
     X.append(round(j,4))
     value = 0
     for i in range(0,N,1):
         value += linearCombination[i](j)
     Y.append(round(value,4))
 
+print(X)
+print(Y)
 #Plotting the points
 plt.plot(X,Y)
 
